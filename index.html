@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Motorcycle Book - Spec Deck</title>
+    <title>My Motorcycle Book</title>
     <style>
         :root {
-            --bg-color: #0f0f11;
-            --card-bg: #19191e;
+            --bg-color: #0d0d0f;
+            --card-bg: #16161a;
             --accent-gold: #f39c12;
-            --text-main: #f4f7f6;
-            --text-muted: #8e9297;
-            --border-color: #26262b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-color: #24242b;
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -25,96 +25,69 @@
         }
         .header {
             text-align: center;
-            max-width: 600px;
-            margin-bottom: 30px;
+            max-width: 700px;
+            margin-bottom: 40px;
         }
-        h1 { color: var(--accent-gold); margin-bottom: 5px; font-size: 2.5rem; }
-        .controls {
+        h1 { color: var(--accent-gold); margin-bottom: 10px; font-size: 2.8rem; letter-spacing: 0.5px; }
+        .subtitle { color: var(--text-muted); font-size: 1.1rem; }
+        
+        .search-container {
             width: 100%;
-            max-width: 1200px;
-            margin-bottom: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
+            max-width: 500px;
+            margin-bottom: 40px;
         }
         .search-bar {
             width: 100%;
-            max-width: 400px;
-            padding: 12px 20px;
-            background: #222227;
+            padding: 14px 24px;
+            background: #1e1e24;
             border: 1px solid var(--border-color);
             border-radius: 30px;
             color: white;
             font-size: 1rem;
             outline: none;
-            transition: border 0.3s;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
         }
         .search-bar:focus { border-color: var(--accent-gold); }
-        .filter-tags { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-        .tag-btn {
-            background: #222227;
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        .tag-btn.active, .tag-btn:hover {
-            background: var(--accent-gold);
-            color: #000;
-            border-color: var(--accent-gold);
-        }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 25px;
-            max-width: 1200px;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 30px;
+            max-width: 1300px;
             width: 100%;
         }
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
+            border-top: 5px solid var(--accent-gold);
             border-radius: 14px;
             padding: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            transition: transform 0.3s, border-color 0.3s;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
         }
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-gold);
-        }
         .bike-title {
             color: var(--accent-gold);
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             font-weight: bold;
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
-        .highlight-box {
-            display: flex;
-            justify-content: space-between;
-            background: rgba(255,255,255,0.02);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            border: 1px solid rgba(255,255,255,0.03);
+        .spec-item {
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
-        .stat-group { margin-bottom: 12px; font-size: 0.95rem; line-height: 1.4; }
         .label {
             color: var(--text-muted);
-            font-weight: 600;
+            font-weight: 700;
             display: block;
-            margin-bottom: 2px;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
+            margin-bottom: 3px;
         }
         .value { color: var(--text-main); }
     </style>
@@ -123,89 +96,68 @@
 
     <div class="header">
         <h1>My Motorcycle Book</h1>
-        <p style="color: var(--text-muted);">Interactive digital database of classic, modern, hyper, and electric specifications.</p>
+        <p class="subtitle">Complete Uncut 12-Motorcycle Specification Archive</p>
     </div>
 
-    <div class="controls">
-        <input type="text" id="searchInput" class="search-bar" placeholder="Search models or specs...">
-        <div class="filter-tags">
-            <button class="tag-btn active" onclick="filterCategory('all')">All Bikes</button>
-            <button class="tag-btn" onclick="filterCategory('hyper')">Hyperbike / forced induction</button>
-            <button class="tag-btn" onclick="filterCategory('superbike')">Superbike / Track</button>
-            <button class="tag-btn" onclick="filterCategory('naked')">Hyper-Naked / Street</button>
-            <button class="tag-btn" onclick="filterCategory('classic')">Classic / 90s & 80s</button>
-            <button class="tag-btn" onclick="filterCategory('cruiser')">Cruiser</button>
-            <button class="tag-btn" onclick="filterCategory('electric')">Electric</button>
-        </div>
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-bar" placeholder="Type to search all 12 bikes instantly...">
     </div>
 
     <div class="grid" id="bikeGrid">
 
-        <!-- KAWASAKI NINJA H2R -->
-        <div class="card" data-type="hyper">
-            <div class="bike-title">Kawasaki Ninja H2R (2026)</div>
-            <div class="highlight-box">
-                <div><span class="label">Displacement</span><span class="value">998 cc</span></div>
-                <div><span class="label">Top Speed</span><span class="value">240 mph</span></div>
-            </div>
-            <div class="stat-group"><span class="label">0 - 60 mph</span><span class="value">2.93 seconds</span></div>
-            <div class="stat-group"><span class="label">0 - 100 mph</span><span class="value">5.12 seconds</span></div>
-            <div class="stat-group"><span class="label">Engine & Turbo</span><span class="value">Liquid-cooled, 4-stroke inline 4-cylinder DOHC 16-valve Centrifugal Supercharged</span></div>
-            <div class="stat-group"><span class="label">Configuration</span><span class="value">4 Pistons, 6-speed dog-ring transmission with Kawasaki Quick Shifter (KQS)</span></div>
+        <!-- 1. SUZUKI RG125 GAMMA 1992 -->
+        <div class="card">
+            <div class="bike-title">Suzuki RG125 Gamma 1992 Blue/White 124Cc</div>
+            <div class="spec-item"><span class="label">.0 - 60 mph</span><span class="value">6.5 seconds (96.5 km/h) = 6.6 seconds (100 km/h)</span></div>
+            <div class="spec-item"><span class="label">.0 - 100 mph</span><span class="value">N/A (Does not reach 100 mph)</span></div>
+            <div class="spec-item"><span class="label">Top Speed</span><span class="value">95 mph (152.8 km/h) = 95 mph</span></div>
+            <div class="spec-item"><span class="label">Cc</span><span class="value">124 cc</span></div>
+            <div class="spec-item"><span class="label">What turbo</span><span class="value">None (High-performance 2-Stroke engine with Automatic Exhaust Timing Control valve)</span></div>
+            <div class="spec-item"><span class="label">How many pistons</span><span class="value">1 Piston (Single-Cylinder Engine)</span></div>
+            <div class="spec-item"><span class="label">How many gears</span><span class="value">6 Gears</span></div>
+            <div class="spec-item"><span class="label">What engine</span><span class="value">Liquid-cooled, 2-stroke, single-cylinder crankcase reed-valve racing engine</span></div>
+            <div class="spec-item"><span class="label">What screen</span><span class="value">Clear plastic aerodynamic sport bubble windscreen integrated into the upper front fairing</span></div>
+            <div class="spec-item"><span class="label">What panels</span><span class="value">Lightweight fiberglass race-replica body fairings mounted onto a sport aluminium frame</span></div>
+            <div class="spec-item"><span class="label">What Gearbox</span><span class="value">6-speed manual return shift transmission with a single side-mounted expansion chamber exhaust</span></div>
         </div>
 
-        <!-- KTM 1390 SUPER DUKE R EVO -->
-        <div class="card" data-type="naked">
-            <div class="bike-title">KTM 1390 Super Duke R Evo (2026)</div>
-            <div class="highlight-box">
-                <div><span class="label">Displacement</span><span class="value">1350 cc</span></div>
-                <div><span class="label">Top Speed</span><span class="value">168 mph / 186 mph</span></div>
-            </div>
-            <div class="stat-group"><span class="label">0 - 60 mph</span><span class="value">3.2 seconds</span></div>
-            <div class="stat-group"><span class="label">0 - 100 mph</span><span class="value">5.6 seconds</span></div>
-            <div class="stat-group"><span class="label">Engine & Valvetrain</span><span class="value">Liquid-cooled, 4-stroke, 75-degree V-twin LC8 engine with Camshift technology</span></div>
+        <!-- 2. YAMAHA YZR-M1 2026 -->
+        <div class="card">
+            <div class="bike-title">Yamaha YZR-M1 2026 Monster Energy Team 1000Cc</div>
+            <div class="spec-item"><span class="label">.0 - 60 mph</span><span class="value">2.4 seconds (96.5 km/h) = 2.6 seconds (100 km/h)</span></div>
+            <div class="spec-item"><span class="label">.0 - 100 mph</span><span class="value">4.8 seconds (160.9 km/h) = 4.8 seconds</span></div>
+            <div class="spec-item"><span class="label">Top Speed</span><span class="value">221 mph (355.6 km/h) = 221 mph</span></div>
+            <div class="spec-item"><span class="label">Cc</span><span class="value">1000 cc</span></div>
+            <div class="spec-item"><span class="label">What turbo</span><span class="value">None (Naturally Aspirated with high-pressure ram-air racing induction)</span></div>
+            <div class="spec-item"><span class="label">How many pistons</span><span class="value">4 Pistons (Inline 4-Cylinder crossplane engine layout)</span></div>
+            <div class="spec-item"><span class="label">How many gears</span><span class="value">6 Gears</span></div>
+            <div class="spec-item"><span class="label">What engine</span><span class="value">Liquid-cooled, 4-stroke, inline 4-cylinder, DOHC 16-valve factory MotoGP racing engine</span></div>
+            <div class="spec-item"><span class="label">What screen</span><span class="value">Ultra-lightweight clear Plexiglas bubble race screen integrated into the carbon nose fairing</span></div>
+            <div class="spec-item"><span class="label">What panels</span><span class="value">Full carbon fiber aerodynamic race fairings with massive high-downforce front wings and side ground-effect panels</span></div>
+            <div class="spec-item"><span class="label">What Gearbox</span><span class="value">6-speed seamless transition cassette-style gearbox with a dry multi-plate slipper clutch system</span></div>
         </div>
 
-        <!-- YAMAHA MT-09 -->
-        <div class="card" data-type="naked">
-            <div class="bike-title">Yamaha MT-09 Cyan Storm (2021)</div>
-            <div class="highlight-box">
-                <div><span class="label">Displacement</span><span class="value">890 cc</span></div>
-                <div><span class="label">Top Speed</span><span class="value">145 mph</span></div>
-            </div>
-            <div class="stat-group"><span class="label">0 - 60 mph</span><span class="value">3.3 seconds</span></div>
-            <div class="stat-group"><span class="label">0 - 100 mph</span><span class="value">5.8 seconds</span></div>
-            <div class="stat-group"><span class="label">Engine & Configuration</span><span class="value">Liquid-cooled, 4-stroke, inline 3-cylinder CP3 DOHC; 3 Pistons; 6 Gears</span></div>
+        <!-- 3. HARLEY-DAVIDSON FAT BOY 114 2026 -->
+        <div class="card">
+            <div class="bike-title">Harly-Davidson Fat Boy 114 2026 Vivid Black 1868 Cc</div>
+            <div class="spec-item"><span class="label">.0 - 60 mph</span><span class="value">4.1 seconds (96.5 km/h) = 4.3 seconds (100 km/h)</span></div>
+            <div class="spec-item"><span class="label">.0 - 100 mph</span><span class="value">11.8 seconds (160.9 km/h) = 11.8 seconds</span></div>
+            <div class="spec-item"><span class="label">Top Speed</span><span class="value">110 mph (177.0 km/h) = 110 mph</span></div>
+            <div class="spec-item"><span class="label">Cc</span><span class="value">1868 cc</span></div>
+            <div class="spec-item"><span class="label">What turbo</span><span class="value">None (Naturally Aspirated)</span></div>
+            <div class="spec-item"><span class="label">How many pistons</span><span class="value">2 Pistons (V-Twin Engine Arrangement)</span></div>
+            <div class="spec-item"><span class="label">How many gears</span><span class="value">6 Gears</span></div>
+            <div class="spec-item"><span class="label">What engine</span><span class="value">Air/Oil-cooled, 4-stroke, Milwaukee-Eight 114 V-Twin OHV</span></div>
+            <div class="spec-item"><span class="label">What screen</span><span class="value">None (Classic open naked cruiser dashboard with a tank-mounted analogue speedometer)</span></div>
+            <div class="spec-item"><span class="label">What panels</span><span class="value">Heavy-duty steel chopped fenders and sculpted teardrop fuel tank with signature satin chrome accents</span></div>
+            <div class="spec-item"><span class="label">What Gearbox</span><span class="value">6-speed Cruise Drive transmission with a multi-plate wet clutch</span></div>
         </div>
 
-        <!-- YAMAHA FZR 1000 EXUP -->
-        <div class="card" data-type="classic">
-            <div class="bike-title">Yamaha FZR 1000 EXUP (1993)</div>
-            <div class="highlight-box">
-                <div><span class="label">Displacement</span><span class="value">1002 cc</span></div>
-                <div><span class="label">Top Speed</span><span class="value">170 mph</span></div>
-            </div>
-            <div class="stat-group"><span class="label">0 - 60 mph</span><span class="value">2.7 seconds</span></div>
-            <div class="stat-group"><span class="label">0 - 100 mph</span><span class="value">5.6 seconds</span></div>
-            <div class="stat-group"><span class="label">Engine Layout</span><span class="value">Liquid-cooled, 4-stroke, transverse inline-4, DOHC 20-valve (5 valves per cylinder)</span></div>
-        </div>
-
-        <!-- BMW M 1000 RR -->
-        <div class="card" data-type="superbike">
-            <div class="bike-title">BMW M 1000 RR (2025)</div>
-            <div class="highlight-box">
-                <div><span class="label">Displacement</span><span class="value">999 cc</span></div>
-                <div><span class="label">Top Speed</span><span class="value">195 mph</span></div>
-            </div>
-            <div class="stat-group"><span class="label">0 - 60 mph</span><span class="value">3.1 seconds</span></div>
-            <div class="stat-group"><span class="label">0 - 100 mph</span><span class="value">5.5 seconds</span></div>
-            <div class="stat-group"><span class="label">Engine Details</span><span class="value">Water/oil-cooled, 4-stroke inline 4 with BMW ShiftCam tech (4 Pistons, 6 Gears)</span></div>
-        </div>
-
-        <!-- KAWASAKI NINJA ZX-10R -->
-        <div class="card" data-type="superbike">
-            <div class="bike-title">Kawasaki Ninja ZX-10R (2026)</div>
-            <div class="highlight-box">
-                <div><span class="label">Displacement</span><span class="value">998 cc</span></div>
-                <div><span class="label">Top Speed</span><span class="value">186 mph (Ltd)</span></div>
-            </div>
+        <!-- 4. SUZUKI RG500 GAMMA 1986 -->
+        <div class="card">
+            <div class="bike-title">Suzuki RG500 Gamma 1986 Blue/White 498 Cc</div>
+            <div class="spec-item"><span class="label">.0 - 60 mph</span><span class="value">3.0 seconds (96.5 km/h) = 3.2 seconds (100 km/h)</span></div>
+            <div class="spec-item"><span class="label">.0 - 100 mph</span><span class="value">6.7 seconds (160.9 km/h) = 6.7 seconds</span></div>
+            <div class="spec-item"><span class="label">Top Speed</span><span class="value">147 mph (236.4 km/h) = 147 mph</span></div>
+            <div class="spec-item"><span class="label">Cc</span><span class="value">498 cc</span></div>
+            <div class="spec-item"><span class="label">What turbo</span><span class="value">None (High-performance 2-Stroke engine with Rotary Disc Valves)</span></div>
